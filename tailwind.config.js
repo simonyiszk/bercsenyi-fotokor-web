@@ -1,3 +1,5 @@
+const defaultTheme = require("tailwindcss/defaultTheme");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -7,6 +9,10 @@ module.exports = {
   theme: {
     fontFamily: {
       "roboto-mono": ["Roboto Mono", "monospace"],
+    },
+    screens: {
+      xs: "340px",
+      ...defaultTheme.screens,
     },
     extend: {
       colors: {
