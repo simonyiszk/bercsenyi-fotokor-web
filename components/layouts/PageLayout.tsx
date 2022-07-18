@@ -1,3 +1,5 @@
+import Footer from "@/components/footer/Footer";
+
 type PageLayoutProps = {
   children: JSX.Element | JSX.Element[];
 };
@@ -10,9 +12,7 @@ export default function PageLayout({ children }: PageLayoutProps) {
           header{/* replace with header component */}
         </header>
         <main className="flex flex-grow w-full">{children}</main>
-        <footer className="flex-none">
-          footer{/* replace with footer component */}
-        </footer>
+        <Footer />
       </div>
     </div>
   );
