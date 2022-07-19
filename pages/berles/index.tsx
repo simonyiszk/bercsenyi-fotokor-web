@@ -1,3 +1,9 @@
+import InnerLayout from "@/components/layouts/InnerLayout";
+
 export default function RentPage() {
-  return <h1>Bérlés</h1>;
+  return (
+    <InnerLayout title="Bérlés" restrictHeight restrictWidth>
+      <p>Bérlés</p>
+    </InnerLayout>
+  );
 }

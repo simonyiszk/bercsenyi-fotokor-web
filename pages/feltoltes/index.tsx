@@ -1,3 +1,9 @@
+import InnerLayout from "@/components/layouts/InnerLayout";
+
 export default function SubmitPage() {
-  return <h1>Feltöltés</h1>;
+  return (
+    <InnerLayout title="Feltöltés" restrictHeight restrictWidth>
+      <p>Feltöltés</p>
+    </InnerLayout>
+  );
 }

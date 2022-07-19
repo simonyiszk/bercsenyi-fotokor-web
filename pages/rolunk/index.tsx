@@ -1,3 +1,9 @@
+import InnerLayout from "@/components/layouts/InnerLayout";
+
 export default function AboutPage() {
-  return <h1>Rólunk</h1>;
+  return (
+    <InnerLayout title="Rólunk" restrictHeight hideTitle>
+      <p>Rólunk content</p>
+    </InnerLayout>
+  );
 }
