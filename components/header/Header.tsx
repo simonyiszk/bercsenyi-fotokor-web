@@ -24,6 +24,7 @@ export default function Header() {
     if (width && width > (mdBreakpoint ?? 768) && isOpen) {
       setIsOpen(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [width]);
 
   return (
