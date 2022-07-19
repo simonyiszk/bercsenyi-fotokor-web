@@ -1,6 +1,6 @@
 import React from "react";
 
-import AppIcons from "./AppIcons";
+import AppIcons from "../icons/AppIcons";
 
 export default function Footer() {
   const footerText = {

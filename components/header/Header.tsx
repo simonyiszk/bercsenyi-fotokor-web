@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { routes } from "@/contents/links";
-import AppIcons from "../footer/AppIcons";
+import AppIcons from "../icons/AppIcons";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { fullConfig } from "@/utils/tailwindConfig";
@@ -42,6 +42,7 @@ export default function Header() {
                   alt="bercsényi fotókör logo"
                   className="rounded-full"
                   objectFit="cover"
+                  priority
                 />
                 <span>bercsényi fotókör</span>
               </div>
@@ -70,6 +71,7 @@ export default function Header() {
                 alt="bercsényi fotókör logo"
                 className="rounded-full"
                 objectFit="cover"
+                priority
               />
               <span>bercsényi fotókör</span>
             </div>
