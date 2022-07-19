@@ -1,8 +1,10 @@
+import InnerLayout from "@/components/layouts/InnerLayout";
+
 const HomePage = () => {
   return (
-    <div>
-      <h1>Home</h1>
-    </div>
+    <InnerLayout title="Főoldal" hideTitle>
+      <p>Főoldal content</p>
+    </InnerLayout>
   );
 };
 
