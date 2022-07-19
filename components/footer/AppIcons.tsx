@@ -2,17 +2,30 @@ import Image, { ImageProps } from "next/image";
 import clsx from "clsx";
 
 type AppIconsType = {
-  icon: "schdesign" | "facebook" | "instagram" | "email";
+  icon:
+    | "schdesign"
+    | "facebook"
+    | "instagram"
+    | "email"
+    | "hamburger"
+    | "close";
   className?: string;
   size?: {
     height: string;
     width: string;
   };
+  onClick?: () => void;
 };
 
-export default function AppIcons({ icon, className, size }: AppIconsType) {
+export default function AppIcons({
+  icon,
+  className,
+  size,
+  onClick,
+}: AppIconsType) {
   return (
     <Image
+      onClick={() => onClick && onClick()}
       className={clsx(className)}
       src={iconPaths[icon]}
       alt={`${icon} icon`}
@@ -26,4 +39,6 @@ const iconPaths = {
   email: "/svgFiles/email.svg",
   instagram: "/svgFiles/ig.svg",
   facebook: "/svgFiles/fb.svg",
+  hamburger: "/svgFiles/hamburger.svg",
+  close: "/svgFiles/close.svg",
 };
