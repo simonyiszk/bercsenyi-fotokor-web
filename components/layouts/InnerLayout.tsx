@@ -22,11 +22,11 @@ export default function InnerLayout({
         {/* todo seo stuff 
         https://github.com/simonyiszk/bercsenyi-fotokor-web/milestone/3
         */}
-        <title>{title.toLocaleLowerCase()} - bercsényi fotókör</title>
+        <title>{`${title.toLocaleLowerCase()} - bercsényi fotókör`}</title>
       </Head>
       <div
         className={clsx(
-          restrictWidth && "max-w-6xl",
+          restrictWidth && "max-w-6xl px-5",
           restrictHeight && "py-16",
           "w-full h-full mx-auto"
         )}
