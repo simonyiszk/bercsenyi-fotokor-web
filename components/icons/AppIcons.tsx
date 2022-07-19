@@ -29,6 +29,7 @@ export default function AppIcons({
       className={clsx(className)}
       src={iconPaths[icon]}
       alt={`${icon} icon`}
+      priority
       {...size}
     />
   );
