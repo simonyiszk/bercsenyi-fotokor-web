@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { Field, Form, Formik } from "formik";
 import Image from "next/image";
 import { useState } from "react";
+import FileInputButton from "../typography/FileInputButton";
 
 interface SubmitFormValues {
   monogramm: string;
@@ -22,6 +23,8 @@ const SubmitForm = () => {
   const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {};
 
   const [imgSrc, setImgSrc] = useState<string | null>(null);
+
+  const [imgFile, setImgFile] = useState<File | null>(null);
   return (
     <>
       <Formik
@@ -29,11 +32,11 @@ const SubmitForm = () => {
         onSubmit={onSubmit}
         validationSchema={SubmitFormSchema}
       >
-        {({ errors, touched, setFieldValue, values }) => {
+        {({ errors, touched, setFieldValue, setFieldTouched, values }) => {
           return (
             <>
               <Form>
-                <div className="grid grid-cols-2 gap-x-8 gap-y-16 w-full max-w-xs">
+                <div className="grid grid-cols-2 gap-x-8 gap-y-16 w-full ">
                   <div>
                     <label htmlFor="monogramm" className="label">
                       Monogrammod:
@@ -41,7 +44,7 @@ const SubmitForm = () => {
                     <Field
                       className={clsx(
                         errors.monogramm && touched.monogramm && "input-error",
-                        "input bg-gray-100 w-[6em] max-w-xs"
+                        "input bg-base-200  w-full"
                       )}
                       id="monogramm"
                       name="monogramm"
@@ -57,7 +60,7 @@ const SubmitForm = () => {
                       as="select"
                       name="photoType"
                       id="photoType"
-                      className="input bg-gray-100"
+                      className="input bg-base-200 w-full"
                     >
                       <option className="select" value="analoge">
                         analóg
@@ -67,19 +70,20 @@ const SubmitForm = () => {
                       </option>
                     </Field>
                   </div>
-
-                  <input
-                    id="file"
-                    type="file"
-                    name="file"
-                    accept="image/png, image/webp, image/jpeg"
-                    className="col-span-full"
-                    onChange={(event) => {
-                      if (event.target.files) {
-                        setFieldValue("file", event.target?.files[0]);
-                      }
-                    }}
-                  />
+                  <div className="col-span-full">
+                    <FileInputButton
+                      options={{
+                        accept: "image/png, image/jpeg, image/webp",
+                        name: "file",
+                        id: "file",
+                      }}
+                      handleFile={(f) => {
+                        setImgFile(f);
+                        setFieldValue("file", f);
+                      }}
+                      isAccepted={!!imgFile}
+                    />
+                  </div>
                 </div>
                 <div className="col-span-full">
                   <ul>

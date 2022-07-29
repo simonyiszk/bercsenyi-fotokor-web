@@ -1,5 +1,5 @@
 export const imgUploadDescription = `Az alábbi felületen beküldött képpel tudsz részt venni az asszociós
-játékunkban. Az eddigi képek nagy része analóg filmre lett fotózni,
+játékunkban. Az eddigi képek nagy része analóg filmre lett fotózva,
 viszont ez nem követelmény, nyugodtan küldhetsz digitális fotót. A
 feltöltéshez mindenképp be kell jelentkezz egy Google fiókkal.`;
 
