@@ -1,6 +1,6 @@
 import Title from "./Title";
 
-type ListingProps = {
+export type ListingProps = {
   title: string;
   items: string[];
 };
