@@ -2,10 +2,10 @@ import { UserInfo } from "firebase/auth";
 import { DocumentReference } from "firebase/firestore";
 import { UserRoleType } from "./role";
 export interface IUser {
-  id: string;
+  readonly id: string;
   monogramm?: string;
-  google: UserInfo;
-  created_at: Date;
+  readonly google: UserInfo;
+  readonly created_at: Date;
   ban?: {
     /**
      * true if isShadowBanned is true
