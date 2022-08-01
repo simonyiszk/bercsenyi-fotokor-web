@@ -19,9 +19,13 @@ export interface IPost {
    * image imported from old site
    */
   readonly isLegacy?: boolean;
-  isHidden?: boolean;
-  /**
-   * if deleted, the image will be deleted from cloud storage but not from database
-   */
-  isDeleted?: boolean;
+  moderated?: {
+    isHidden?: boolean;
+    /**
+     * if deleted, the image will be deleted from cloud storage but not from database
+     */
+    isDeleted?: boolean;
+    moderated_by?: DocumentReference;
+    reason?: string;
+  };
 }
