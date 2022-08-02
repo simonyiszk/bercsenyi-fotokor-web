@@ -1,13 +1,14 @@
 import clsx from "clsx";
 import React from "react";
 
-type CustomButtonType = "black" | "yellow";
+type CustomButtonType = "black" | "yellow" | "disabled";
 
 export type CustomButtonProps = {
   variant: CustomButtonType;
   onClick: () => any;
   children: string;
   className?: string;
+  asLink?: boolean;
 };
 
 const CustomButton = ({
@@ -20,11 +21,13 @@ const CustomButton = ({
     <button
       className={clsx(
         className,
-        variant == CustomButtonType.black && "text-white bg-black",
-        variant == CustomButtonType.yellow && "text-black bg-fotokor-zold",
+        variant === "black" && "text-white bg-black",
+        variant === "yellow" && "text-black bg-fotokor-zold",
+        variant === "disabled" && "text-gray-200 bg-black line-through",
         "rounded-sm px-4 py-1 text-base font-normal"
       )}
       onClick={onClick}
+      disabled={variant === "disabled"}
     >
       {children}
     </button>
