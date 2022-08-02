@@ -1,10 +1,7 @@
 import clsx from "clsx";
 import React from "react";
 
-export enum CustomButtonType {
-  black = "black",
-  yellow = "yellow",
-}
+type CustomButtonType = "black" | "yellow";
 
 export type CustomButtonProps = {
   variant: CustomButtonType;
