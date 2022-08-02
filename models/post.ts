@@ -9,9 +9,9 @@ export interface IPost {
    * range: 1..inf
    */
   serial?: number;
-  posted_by: {
-    ref?: DocumentReference;
-    monogramm: string;
+  readonly posted_by: {
+    readonly ref?: DocumentReference;
+    readonly monogramm: string;
   };
   readonly url: string;
   readonly posted_at: Date;
