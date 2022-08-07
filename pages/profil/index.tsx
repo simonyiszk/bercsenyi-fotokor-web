@@ -14,10 +14,9 @@ export default function ProfilePage() {
         </div>
         <div className="flex flex-col gap-2 my-4 md:order-3">
           <CustomButton
+            buttonType="Link"
+            href="/profil/szerkesztes"
             variant={"black"}
-            onClick={() => {
-              router.push("/profil/szerkesztes");
-            }}
           >
             monogramm beállítása
           </CustomButton>
@@ -26,36 +25,16 @@ export default function ProfilePage() {
           </CustomButton>
         </div>
         <div className="flex flex-col gap-2">
-          <CustomButton
-            variant={"black"}
-            onClick={() => {
-              router.push("/admin/felhasznalok");
-            }}
-          >
+          <CustomButton buttonType="Link" href="/admin/felhasznalok">
             felhasználók kezelése
           </CustomButton>
-          <CustomButton
-            variant={"disabled"}
-            onClick={() => {
-              router.push("/admin/posztok");
-            }}
-          >
+          <CustomButton buttonType="Link" href="/admin/posztok">
             posztok kezelése
           </CustomButton>
-          <CustomButton
-            variant={"disabled"}
-            onClick={() => {
-              router.push("/admin/eszkozok");
-            }}
-          >
+          <CustomButton buttonType="Link" href="/admin/eszkozok">
             bérelhető eszközök
           </CustomButton>
-          <CustomButton
-            variant={"disabled"}
-            onClick={() => {
-              router.push("/admin/tartalom");
-            }}
-          >
+          <CustomButton buttonType="Link" href="/admin/tartalom">
             tartalom kezelése
           </CustomButton>
         </div>
