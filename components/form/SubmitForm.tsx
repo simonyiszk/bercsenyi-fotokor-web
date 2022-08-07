@@ -96,7 +96,12 @@ const SubmitForm = () => {
                   </ul>
                 </div>
 
-                <button type={"submit"}>submit</button>
+                <button
+                  className="w-full text-black bg-fotokor-zold rounded-sm px-4 py-1 text-base font-normal text-center"
+                  type={"submit"}
+                >
+                  submit
+                </button>
               </Form>
 
               <div></div>
