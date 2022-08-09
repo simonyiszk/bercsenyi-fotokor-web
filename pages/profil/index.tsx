@@ -1,23 +1,47 @@
 import InnerLayout from "@/components/layouts/InnerLayout";
 import CustomButton from "@/components/typography/CustomButton";
 import { firebaseAuth } from "@/utils/firebase";
+import Image from "next/image";
 import { useRouter } from "next/router";
-import { useAuthState, useSignInWithGoogle } from "react-firebase-hooks/auth";
+import { useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function ProfilePage() {
-  const [signInWithGoogle, user, loading, error] =
-    useSignInWithGoogle(firebaseAuth);
+  const [uUser, uLoading, uError] = useAuthState(firebaseAuth);
+  console.log(uUser);
 
-  console.log(user, loading, error);
+  useEffect(() => {
+    console.log("uUser change");
+  }, [uUser]);
+
+  const router = useRouter();
 
   return (
     <InnerLayout title="Profil" restrictHeight restrictWidth>
       <>
-        {user && (
+        {uLoading && <span>Loading...</span>}
+        {uUser && (
           <div className="grid md:grid-cols-2 gap-8">
             <div>
-              <p>{user.user.displayName}</p>
-              <p>{user.user.email}</p>
+              <Image
+                src={uUser.photoURL ?? "https://placehold.jp/150x150.png"}
+                width={64}
+                height={64}
+                alt={"user profile pic"}
+              />
+              <p>{uUser.displayName}</p>
+              <p>{uUser.email}</p>
+              {uUser.metadata.creationTime && (
+                <p>{`regisztárlva: ${new Date(
+                  uUser.metadata.creationTime
+                ).toLocaleDateString("hu-HU")}`}</p>
+              )}
+              {uUser.metadata.lastSignInTime && (
+                <p>{`utolsó bejelentkezés: ${new Date(
+                  uUser.metadata.lastSignInTime
+                ).toLocaleDateString("hu-HU")}`}</p>
+              )}
+
               <p>admin jogod van</p>
             </div>
             <div className="flex flex-col gap-2 my-4 md:order-3">
@@ -28,7 +52,12 @@ export default function ProfilePage() {
               >
                 monogramm beállítása
               </CustomButton>
-              <CustomButton variant={"yellow"} onClick={() => {}}>
+              <CustomButton
+                variant={"yellow"}
+                onClick={async () => {
+                  await firebaseAuth.signOut();
+                }}
+              >
                 kijelentkezés
               </CustomButton>
             </div>
@@ -49,10 +78,18 @@ export default function ProfilePage() {
             <div></div>
           </div>
         )}
-        {!user && (
+        {!uUser && !uLoading && (
           <div>
-            <CustomButton variant="yellow" onClick={() => signInWithGoogle()}>
-              Bejelentkezés Google fiókkal
+            <CustomButton
+              variant="yellow"
+              buttonType="Link"
+              href="/bejelentkezes"
+              onClick={(e) => {
+                e.preventDefault();
+                router.replace("/bejelentkezes");
+              }}
+            >
+              Bejelentkezés
             </CustomButton>
           </div>
         )}
