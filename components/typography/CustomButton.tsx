@@ -5,8 +5,8 @@ type CustomButtonType = "black" | "yellow" | "disabled";
 
 export type CustomButtonProps = {
   variant?: CustomButtonType;
-  onClick?: () => any;
-  children: string;
+  onClick?: (e?: any) => any;
+  children: string | JSX.Element;
   className?: string;
   asLink?: boolean;
   buttonType?: "button" | "a" | "Link";
