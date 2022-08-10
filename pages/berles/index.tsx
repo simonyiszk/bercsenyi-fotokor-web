@@ -56,7 +56,7 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       data: pageContent,
     },
-    revalidate: runningEnv === "development" ? 0 : 60 * 60,
+    revalidate: runningEnv === "development" ? 1 : 60 * 60,
     notFound: pageContent === undefined,
   };
 };
