@@ -5,7 +5,6 @@ Yup.addMethod(Yup.string, "numOfNumbersInMonogramm", function (max: number) {
   return this.test("numOfNumbersInMonogramm", msg, function (value): boolean {
     if (!value) return true;
     const numOfNumbers = value.replace(/\D/g, "").length;
-    console.log(numOfNumbers);
     return max >= numOfNumbers;
   });
 });
@@ -15,5 +14,5 @@ export const SubmitFormSchema = Yup.object().shape({
   photoType: Yup.string()
     .required()
     .matches(/^(analoge|digital)$/),
-  file: Yup.mixed().required().nullable(false),
+  file: Yup.mixed().required().nullable(false).notOneOf([null, undefined]),
 });
