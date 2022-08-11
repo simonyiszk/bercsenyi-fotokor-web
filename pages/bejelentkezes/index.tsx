@@ -8,6 +8,7 @@ import type { IUser } from "@/models/user";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect, useState } from "react";
+import { routes } from "@/contents/links";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -28,7 +29,6 @@ export default function LoginPage() {
       const docSnapshot = await getDoc(docRef);
 
       if (!docSnapshot.exists()) {
-        console.log("not exists");
         setDoc(doc(firebaseFirestore, "users", user.uid), {
           id: user.uid,
           role: "user",
@@ -36,8 +36,6 @@ export default function LoginPage() {
           google: user.providerData[0],
         } as IUser);
         setIsLoginLoading(false);
-      } else {
-        console.log("exists");
       }
     } catch (error) {
       // TODO: handle error
@@ -50,6 +48,14 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (user) {
+      if (
+        router.query.redirect &&
+        (routes.folytkov.find((r) => r.href === router.query.redirect) ||
+          routes.other.find((r) => r.href === router.query.redirect))
+      ) {
+        router.replace(router.query.redirect as string);
+        return;
+      }
       router.replace("/profil");
     }
   }, [router, user]);

@@ -6,6 +6,7 @@ import Paragraph from "@/components/typography/Paragraph";
 import Title from "@/components/typography/Title";
 import { imgUploadDescription, imgUploadRules } from "@/contents/text";
 import { firebaseAuth } from "@/utils/firebase";
+import router from "next/router";
 import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -33,7 +34,10 @@ export default function SubmitPage() {
             <SubmitForm user={user} />
           </div>
         ) : (
-          <CustomButton buttonType="Link" href="/bejelentkezes">
+          <CustomButton
+            buttonType="Link"
+            href="/bejelentkezes?redirect=/feltoltes"
+          >
             bejelentkezés
           </CustomButton>
         )}

@@ -112,11 +112,7 @@ export default function ProfilePage() {
             <CustomButton
               variant="yellow"
               buttonType="Link"
-              href="/bejelentkezes"
-              onClick={(e) => {
-                e.preventDefault();
-                router.replace("/bejelentkezes");
-              }}
+              href="/bejelentkezes?redirect=/profil"
             >
               Bejelentkezés
             </CustomButton>
