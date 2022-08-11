@@ -1,4 +1,4 @@
-import { DocumentReference } from "firebase/firestore";
+import { DocumentReference, Timestamp } from "firebase/firestore";
 
 export interface IPost {
   readonly id: string;
@@ -12,9 +12,10 @@ export interface IPost {
   readonly posted_by: {
     readonly ref?: DocumentReference;
     readonly monogramm: string;
+    readonly id: string;
   };
   readonly url: string;
-  readonly posted_at: Date;
+  readonly posted_at: Timestamp;
   /**
    * image imported from old site
    */

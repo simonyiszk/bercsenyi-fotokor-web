@@ -28,6 +28,7 @@ const FileInputButton = ({
   return (
     <>
       <button
+        type="button"
         className={clsx(
           isAccepted ? "hover:bg-success" : "bg-base-200",
           isAccepted && "input-success hover:bg-success",

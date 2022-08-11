@@ -1,24 +1,53 @@
+import { firebaseFirestore, firebaseStorage } from "@/utils/firebase";
 import { SubmitFormSchema } from "@/utils/yup";
 import clsx from "clsx";
-import { Field, Form, Formik } from "formik";
+import { User } from "firebase/auth";
+import { Field, Form, Formik, FormikValues } from "formik";
 import Image from "next/image";
 import { useState } from "react";
 import FileInputButton from "../typography/FileInputButton";
-
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { setDoc, doc } from "firebase/firestore";
+import { IPost } from "@/models/post";
+import { v4 as uuidv4 } from "uuid";
 interface SubmitFormValues {
   monogramm: string;
   photoType: "analoge" | "digital";
   file: File | null;
 }
 
-const SubmitForm = () => {
+type SubmitFormProps = {
+  user: User;
+};
+
+const SubmitForm = ({ user }: SubmitFormProps) => {
   const initialValues: SubmitFormValues = {
     monogramm: "",
     photoType: "analoge",
     file: null,
   };
 
-  const onSubmit = () => {};
+  console.log(user);
+
+  const onSubmit = async (values: SubmitFormValues) => {
+    const storageRef = ref(firebaseStorage, uuidv4());
+
+    // @ts-expect-error
+    const snapshot = await uploadBytes(storageRef, values.file);
+    const url = await getDownloadURL(snapshot.ref);
+
+    await setDoc(doc(firebaseFirestore, "posts", uuidv4()), {
+      id: `${values.monogramm}_${values.photoType}_${Date.now()}`,
+      posted_at: new Date(),
+      monogramm: values.monogramm,
+      photoType: values.photoType,
+      posted_by: {
+        monogramm: values.monogramm,
+        id: user.uid,
+      },
+      url: url,
+    } as unknown as IPost);
+  };
 
   const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {};
 
@@ -33,6 +62,8 @@ const SubmitForm = () => {
         validationSchema={SubmitFormSchema}
       >
         {({ errors, touched, setFieldValue, setFieldTouched, values }) => {
+          console.log(touched);
+          console.log(values);
           return (
             <>
               <Form>

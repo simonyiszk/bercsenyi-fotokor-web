@@ -3,9 +3,17 @@ import Listing from "@/components/typography/Listing";
 import Paragraph from "@/components/typography/Paragraph";
 import Title from "@/components/typography/Title";
 import { join, loremipsun } from "@/contents/mock";
+import { IAboutPageContent } from "@/models/content";
+import { firebaseFirestore } from "@/utils/firebase";
+import { runningEnv } from "@/utils/variables";
+import { doc, DocumentData, getDoc } from "firebase/firestore";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
 import Image from "next/image";
 
-export default function AboutPage() {
+export default function AboutPage({
+  data,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
+  const { introduction, joinUs } = data as IAboutPageContent;
   return (
     <InnerLayout title="Rólunk" restrictHeight restrictWidth hideTitle>
       <div>
@@ -23,7 +31,7 @@ export default function AboutPage() {
           <Title type="mainTitle" className="mb-8 lowercase">
             Rólunk
           </Title>
-          <Paragraph>{loremipsun.slice(0, 250)}</Paragraph>
+          <Paragraph>{introduction}</Paragraph>
         </div>
       </div>
       <div className="my-8">
@@ -31,7 +39,7 @@ export default function AboutPage() {
         <Title className="mb-8" type="mainTitle">
           hogyan tudsz csatlakozni hozzánk?
         </Title>
-        <Paragraph>{loremipsun.slice(0, 200)}</Paragraph>
+        <Paragraph>{joinUs}</Paragraph>
         <div className=" grid md:grid-cols-2 gap-x-20 md:gap-y-10 gap-y-3 my-16">
           {join.map((e) => (
             <div key={e.number} className="flex flex-row gap-6">
@@ -50,3 +58,25 @@ export default function AboutPage() {
     </InnerLayout>
   );
 }
+
+export const getStaticProps: GetStaticProps = async () => {
+  let data: DocumentData | undefined = undefined;
+  try {
+    const contentRef = doc(firebaseFirestore, "content", "about-us");
+    const content = await getDoc(contentRef);
+
+    data = content.data();
+  } catch (error) {
+    console.log("error", error);
+  }
+
+  const pageContent = data as IAboutPageContent | undefined;
+
+  return {
+    props: {
+      data: pageContent,
+    },
+    revalidate: runningEnv === "development" ? 1 : 60 * 60,
+    notFound: pageContent === undefined,
+  };
+};

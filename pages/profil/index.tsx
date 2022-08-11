@@ -1,48 +1,77 @@
 import InnerLayout from "@/components/layouts/InnerLayout";
 import CustomButton from "@/components/typography/CustomButton";
-import { firebaseAuth } from "@/utils/firebase";
+import { IUser } from "@/models/user";
+import { firebaseAuth, firebaseFirestore } from "@/utils/firebase";
+import { doc, DocumentReference, getDoc } from "firebase/firestore";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useDocument } from "react-firebase-hooks/firestore";
 
 export default function ProfilePage() {
-  const [uUser, uLoading, uError] = useAuthState(firebaseAuth);
-  console.log(uUser);
+  const [authUser, authLoading, authError] = useAuthState(firebaseAuth);
+  const [userData, setUserData] = useState<IUser>();
+  const [userDataLoading, setUserDataLoading] = useState(false);
+  const [userError, setUserError] = useState<Error>();
+
+  console.log(authUser);
 
   useEffect(() => {
-    console.log("uUser change");
-  }, [uUser]);
+    console.log("User change");
+    if (authUser) {
+      setUserDataLoading(true);
+      const userRef = doc(firebaseFirestore, "users", authUser.uid);
+      getDoc(userRef)
+        .then((snap) => {
+          setUserData(snap.data() as IUser);
+        })
+        .catch((error) => {
+          setUserError(error);
+        })
+        .finally(() => setUserDataLoading(false));
+    }
+  }, [authUser]);
 
   const router = useRouter();
 
   return (
     <InnerLayout title="Profil" restrictHeight restrictWidth>
       <>
-        {uLoading && <span>Loading...</span>}
-        {uUser && (
+        {(authLoading || userDataLoading) && <span>Loading...</span>}
+        {authUser && userData && (
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <Image
-                src={uUser.photoURL ?? "https://placehold.jp/150x150.png"}
+                src={authUser.photoURL ?? "https://placehold.jp/150x150.png"}
                 width={64}
                 height={64}
                 alt={"user profile pic"}
               />
-              <p>{uUser.displayName}</p>
-              <p>{uUser.email}</p>
-              {uUser.metadata.creationTime && (
+              <p>{authUser.displayName}</p>
+              <p>{authUser.email}</p>
+              {authUser.metadata.creationTime && (
                 <p>{`regisztárlva: ${new Date(
-                  uUser.metadata.creationTime
+                  authUser.metadata.creationTime
                 ).toLocaleDateString("hu-HU")}`}</p>
               )}
-              {uUser.metadata.lastSignInTime && (
+              {authUser.metadata.lastSignInTime && (
                 <p>{`utolsó bejelentkezés: ${new Date(
-                  uUser.metadata.lastSignInTime
+                  authUser.metadata.lastSignInTime
                 ).toLocaleDateString("hu-HU")}`}</p>
               )}
 
-              <p>admin jogod van</p>
+              {userDataLoading && <p>betöltés</p>}
+              {!userDataLoading && userData && (
+                <>
+                  <p>{userData?.role} jogod van</p>
+                  {userData?.monogramm ? (
+                    <p>{`a monogrammod "${userData.monogramm}"`}</p>
+                  ) : (
+                    <p>nincs beállítva monogramm</p>
+                  )}
+                </>
+              )}
             </div>
             <div className="flex flex-col gap-2 my-4 md:order-3">
               <CustomButton
@@ -78,7 +107,7 @@ export default function ProfilePage() {
             <div></div>
           </div>
         )}
-        {!uUser && !uLoading && (
+        {!authUser && !authLoading && (
           <div>
             <CustomButton
               variant="yellow"
