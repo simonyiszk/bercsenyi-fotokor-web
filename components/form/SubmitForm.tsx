@@ -46,7 +46,7 @@ const SubmitForm = ({ user }: SubmitFormProps) => {
         id: user.uid,
       },
       url: url,
-    } as IPost);
+    } as unknown as IPost);
   };
 
   const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {};
