@@ -12,6 +12,7 @@ export interface IPost {
   readonly posted_by: {
     readonly ref?: DocumentReference;
     readonly monogramm: string;
+    readonly id: string;
   };
   readonly url: string;
   readonly posted_at: Date;

@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/simonyiszk/bercsenyi-fotokor-web#readme",
   "dependencies": {
+    "@types/uuid": "^8.3.4",
     "crypto-js": "^4.1.1",
     "firebase": "^9.9.0",
     "formik": "^2.2.9",
@@ -27,6 +28,7 @@
     "react-dom": "18.2.0",
     "react-firebase-hooks": "^5.0.3",
     "react-icons": "^4.4.0",
+    "uuid": "^8.3.2",
     "yup": "^0.32.11"
   },
   "devDependencies": {
