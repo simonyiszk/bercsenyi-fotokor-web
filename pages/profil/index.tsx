@@ -1,45 +1,20 @@
 import InnerLayout from "@/components/layouts/InnerLayout";
 import CustomButton from "@/components/typography/CustomButton";
-import { IUser } from "@/models/user";
-import { firebaseAuth, firebaseFirestore } from "@/utils/firebase";
-import { doc, DocumentReference, getDoc } from "firebase/firestore";
 import Image from "next/image";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useDocument } from "react-firebase-hooks/firestore";
+import {
+  useAuthUser,
+  withAuthUser,
+  withAuthUserTokenSSR,
+  AuthAction,
+} from "next-firebase-auth";
 
-export default function ProfilePage() {
-  const [authUser, authLoading, authError] = useAuthState(firebaseAuth);
-  const [userData, setUserData] = useState<IUser>();
-  const [userDataLoading, setUserDataLoading] = useState(false);
-  const [userError, setUserError] = useState<Error>();
-
-  console.log(authUser);
-
-  useEffect(() => {
-    console.log("User change");
-    if (authUser) {
-      setUserDataLoading(true);
-      const userRef = doc(firebaseFirestore, "users", authUser.uid);
-      getDoc(userRef)
-        .then((snap) => {
-          setUserData(snap.data() as IUser);
-        })
-        .catch((error) => {
-          setUserError(error);
-        })
-        .finally(() => setUserDataLoading(false));
-    }
-  }, [authUser]);
-
-  const router = useRouter();
+function ProfilePage() {
+  const authUser = useAuthUser();
 
   return (
     <InnerLayout title="Profil" restrictHeight restrictWidth>
       <>
-        {(authLoading || userDataLoading) && <span>Loading...</span>}
-        {authUser && userData && (
+        {authUser.firebaseUser && (
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <Image
@@ -50,27 +25,15 @@ export default function ProfilePage() {
               />
               <p>{authUser.displayName}</p>
               <p>{authUser.email}</p>
-              {authUser.metadata.creationTime && (
+              {authUser.firebaseUser?.metadata.creationTime && (
                 <p>{`regisztárlva: ${new Date(
-                  authUser.metadata.creationTime
+                  authUser.firebaseUser?.metadata.creationTime
                 ).toLocaleDateString("hu-HU")}`}</p>
               )}
-              {authUser.metadata.lastSignInTime && (
+              {authUser.firebaseUser?.metadata.lastSignInTime && (
                 <p>{`utolsó bejelentkezés: ${new Date(
-                  authUser.metadata.lastSignInTime
+                  authUser.firebaseUser?.metadata.lastSignInTime
                 ).toLocaleDateString("hu-HU")}`}</p>
-              )}
-
-              {userDataLoading && <p>betöltés</p>}
-              {!userDataLoading && userData && (
-                <>
-                  <p>{userData?.role} jogod van</p>
-                  {userData?.monogramm ? (
-                    <p>{`a monogrammod "${userData.monogramm}"`}</p>
-                  ) : (
-                    <p>nincs beállítva monogramm</p>
-                  )}
-                </>
               )}
             </div>
             <div className="flex flex-col gap-2 my-4 md:order-3">
@@ -84,7 +47,7 @@ export default function ProfilePage() {
               <CustomButton
                 variant={"yellow"}
                 onClick={async () => {
-                  await firebaseAuth.signOut();
+                  await authUser.signOut();
                 }}
               >
                 kijelentkezés
@@ -107,18 +70,21 @@ export default function ProfilePage() {
             <div></div>
           </div>
         )}
-        {!authUser && !authLoading && (
-          <div>
-            <CustomButton
-              variant="yellow"
-              buttonType="Link"
-              href="/bejelentkezes?redirect=/profil"
-            >
-              Bejelentkezés
-            </CustomButton>
-          </div>
+        {!authUser.firebaseUser && (
+          <CustomButton
+            buttonType="Link"
+            href="/bejelentkezes?redirect=/feltoltes"
+          >
+            bejelentkezés
+          </CustomButton>
         )}
       </>
     </InnerLayout>
   );
 }
+
+export const getServerSideProps = withAuthUserTokenSSR({
+  whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
+})();
+
+export default withAuthUser()(ProfilePage);

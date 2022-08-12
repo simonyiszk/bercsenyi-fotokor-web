@@ -5,33 +5,31 @@ import Listing from "@/components/typography/Listing";
 import Paragraph from "@/components/typography/Paragraph";
 import Title from "@/components/typography/Title";
 import { imgUploadDescription, imgUploadRules } from "@/contents/text";
-import { firebaseAuth } from "@/utils/firebase";
-import router from "next/router";
 import { useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { useAuthUser, withAuthUser, AuthAction } from "next-firebase-auth";
 
 type ImageSubmitType = {
   name: string;
   imageFile: FileList | null | undefined;
 };
 
-export default function SubmitPage() {
-  const [user, loading, error] = useAuthState(firebaseAuth);
-
+function SubmitPage() {
   const [image, setImage] = useState<ImageSubmitType>({
     name: "",
     imageFile: null,
   });
 
+  const authUser = useAuthUser();
+
   return (
     <InnerLayout title="folytköv: feltöltés" restrictHeight restrictWidth>
       <div className="grid md:grid-cols-2 md:gap-x-32 md:gap-y-16 gap-y-4">
-        {user ? (
+        {authUser.firebaseUser ? (
           <div>
             <Title className="mb-4" type="lowerTitle">
               feltöltés
             </Title>
-            <SubmitForm user={user} />
+            <SubmitForm user={authUser.firebaseUser} />
           </div>
         ) : (
           <CustomButton
@@ -57,3 +55,5 @@ export default function SubmitPage() {
     </InnerLayout>
   );
 }
+
+export default withAuthUser({})(SubmitPage);

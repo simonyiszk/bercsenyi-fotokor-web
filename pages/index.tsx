@@ -56,7 +56,7 @@ export const getStaticProps: GetStaticProps = async () => {
       id: post.id,
       monogram: post.posted_by.monogramm,
       posted_at: post.posted_at.toDate().toISOString(),
-      serial: i,
+      serial: i + 1,
       url: post.url,
     }))
     .sort((a, b) => {
@@ -67,7 +67,7 @@ export const getStaticProps: GetStaticProps = async () => {
     props: {
       data: pageContent ?? [],
     },
-    revalidate: runningEnv === "development" ? 1 : 60 * 60,
+    revalidate: runningEnv === "development" ? 1 : 5 * 60,
     notFound: pageContent === undefined,
   };
 };

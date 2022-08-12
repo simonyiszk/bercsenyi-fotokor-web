@@ -19,11 +19,12 @@
   },
   "homepage": "https://github.com/simonyiszk/bercsenyi-fotokor-web#readme",
   "dependencies": {
-    "@types/uuid": "^8.3.4",
     "crypto-js": "^4.1.1",
     "firebase": "^9.9.0",
+    "firebase-admin": "^11.0.1",
     "formik": "^2.2.9",
     "next": "12.2.2",
+    "next-firebase-auth": "^1.0.0-canary.14",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-firebase-hooks": "^5.0.3",
@@ -32,10 +33,12 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@firebase/rules-unit-testing": "^2.0.4",
     "@types/crypto-js": "^4.1.1",
     "@types/node": "18.0.4",
     "@types/react": "18.0.15",
     "@types/react-dom": "18.0.6",
+    "@types/uuid": "^8.3.4",
     "autoprefixer": "^10.4.7",
     "clsx": "^1.2.1",
     "daisyui": "^2.20.0",

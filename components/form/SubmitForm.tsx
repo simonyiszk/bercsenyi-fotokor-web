@@ -1,15 +1,15 @@
-import { firebaseFirestore, firebaseStorage } from "@/utils/firebase";
 import { SubmitFormSchema } from "@/utils/yup";
 import clsx from "clsx";
 import { User } from "firebase/auth";
-import { Field, Form, Formik, FormikValues } from "formik";
-import Image from "next/image";
+import { Field, Form, Formik } from "formik";
 import { useState } from "react";
 import FileInputButton from "../typography/FileInputButton";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { setDoc, doc } from "firebase/firestore";
 import { IPost } from "@/models/post";
 import { v4 as uuidv4 } from "uuid";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 interface SubmitFormValues {
   monogramm: string;
   photoType: "analoge" | "digital";
@@ -21,6 +21,9 @@ type SubmitFormProps = {
 };
 
 const SubmitForm = ({ user }: SubmitFormProps) => {
+  const firebaseFirestore = getFirestore();
+  const firebaseStorage = getStorage();
+
   const initialValues: SubmitFormValues = {
     monogramm: "",
     photoType: "analoge",
