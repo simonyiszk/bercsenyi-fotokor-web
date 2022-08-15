@@ -1,0 +1,48 @@
+rules_version = '2';
+service cloud.firestore {
+    match /databases/{database}/documents {
+
+    
+        match /users/{userId} {
+       
+    	    function userExists(){
+    		    return exists(/databases/$(database)/documents/users/$(request.auth.uid));
+    	    }
+      
+            allow read: if isLoggedIn() && (isUserReq(request, resource) || hasRole(resource, ['admin', 'superadmin']));
+            allow create: if isLoggedIn() && !userExists() && isUserReq(request, resource);
+            allow update: if isLoggedIn() && (isUserReq(request, resource) || hasRole(resource, ['admin', 'superadmin']));
+            allow delete: if isLoggedIn() && hasRole(resource, ['admin', 'superadmin']);
+  	    }
+    
+        match /content/{contentId}{
+            allow read;
+            allow create: if isLoggedIn() && hasRole(resource, ["superadmin"])
+            allow update: if isLoggedIn() && hasRole(resource, ["admin", "superadmin"])
+            allow delete: if isLoggedIn() && hasRole(resource, ["superadmin"])
+        }
+    
+        match /posts/{postId}{
+    	    allow read;
+            allow create: if isLoggedIn();
+            allow update: if isLoggedIn() && hasRole(resource, ["admin", "superadmin"])
+            allow delete: if isLoggedIn() && hasRole(resource, ["superadmin"])
+        }
+	}
+}
+
+function isLoggedIn(){
+	return request.auth != null
+}
+
+function isUserReq(req, res){
+    return req.auth.uid == res.data.id
+}
+      
+function getRole(rsc){
+    return rsc.data.role
+}
+    
+function hasRole(rsc, array){
+    return isLoggedIn() && (getRole(rsc) in array)
+}
