@@ -18,7 +18,7 @@ const HomePage = ({ data }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const posts = data as IFolytkovPageContent[];
   return (
     <InnerLayout title="Főoldal" hideTitle>
-      <div className="flex flex-col gap-16">
+      <div className="flex flex-col gap-16 max-w-2xl mx-auto">
         {posts.map((post) => (
           <div
             key={post.id}
@@ -56,7 +56,7 @@ export const getStaticProps: GetStaticProps = async () => {
       id: post.id,
       monogram: post.posted_by.monogramm,
       posted_at: post.posted_at.toDate().toISOString(),
-      serial: i,
+      serial: i + 1,
       url: post.url,
     }))
     .sort((a, b) => {
