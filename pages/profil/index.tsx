@@ -15,10 +15,7 @@ export default function ProfilePage() {
   const [userDataLoading, setUserDataLoading] = useState(false);
   const [userError, setUserError] = useState<Error>();
 
-  console.log(authUser);
-
   useEffect(() => {
-    console.log("User change");
     if (authUser) {
       setUserDataLoading(true);
       const userRef = doc(firebaseFirestore, "users", authUser.uid);

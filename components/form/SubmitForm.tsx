@@ -27,8 +27,6 @@ const SubmitForm = ({ user }: SubmitFormProps) => {
     file: null,
   };
 
-  console.log(user);
-
   const onSubmit = async (values: SubmitFormValues) => {
     const storageRef = ref(firebaseStorage, uuidv4());
 
@@ -62,8 +60,6 @@ const SubmitForm = ({ user }: SubmitFormProps) => {
         validationSchema={SubmitFormSchema}
       >
         {({ errors, touched, setFieldValue, setFieldTouched, values }) => {
-          console.log(touched);
-          console.log(values);
           return (
             <>
               <Form>

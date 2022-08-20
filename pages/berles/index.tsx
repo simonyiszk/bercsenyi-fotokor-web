@@ -12,7 +12,6 @@ import Image from "next/image";
 export default function RentPage({
   data,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  console.log(runningEnv);
   const { description, items } = data as IRentPageContent;
   return (
     <InnerLayout title="Bérlés" restrictHeight restrictWidth>

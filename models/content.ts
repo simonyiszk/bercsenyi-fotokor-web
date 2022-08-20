@@ -14,4 +14,5 @@ export interface IFolytkovPageContent {
   monogram: string;
   url: string;
   posted_at: string;
+  showed: boolean;
 }

@@ -8,7 +8,6 @@ export default function PostCard({
   serial,
   url,
 }: IFolytkovPageContent) {
-  console.log(posted_at);
   return (
     <div className="w-full h-full p-4">
       <div>

@@ -58,7 +58,9 @@ export const getStaticProps: GetStaticProps = async () => {
       posted_at: post.posted_at.toDate().toISOString(),
       serial: i + 1,
       url: post.url,
+      showed: !(post.moderated?.isDeleted || post.moderated?.isHidden) ?? true,
     }))
+    .filter((post) => post.showed)
     .sort((a, b) => {
       return b.serial - a.serial;
     });
